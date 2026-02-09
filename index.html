@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BFM TV - EN DIRECT</title>
+    <style>
+        /* Style inspiré par BFM TV */
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #1a1a1a;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Barre supérieure BFM */
+        .top-bar {
+            background-color: #002b5c; /* Bleu BFM */
+            color: white;
+            padding: 12px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 800;
+            text-transform: uppercase;
+            position: sticky;
+            top: 0;
+            z-index: 1001;
+            border-bottom: 4px solid #ff0000;
+        }
+
+        .logo-bfm {
+            font-size: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .logo-bfm span {
+            background-color: white;
+            color: #002b5c;
+            padding: 0 5px;
+            margin-left: 2px;
+        }
+
+        .live-badge {
+            background-color: #ff0000;
+            padding: 4px 12px;
+            font-size: 0.9rem;
+            animation: blink 1.2s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: 65vh;
+            background-image: url('https://raw.githubusercontent.com/ton-pseudo/ton-depot/main/ton-image.png');
+            background-size: cover;
+            background-position: center;
+            background-color: #222;
+        }
+
+        /* Bandeau d'information massif */
+        .breaking-news-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding-bottom: 20px;
+        }
+
+        .main-title-box {
+            background-color: #0056b3;
+            color: white;
+            display: table;
+            padding: 10px 30px;
+            font-size: 2.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-left: 5%;
+        }
+
+        .subtitle-box {
+            background-color: white;
+            color: #002b5c;
+            display: table;
+            padding: 8px 30px;
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin-left: 5%;
+            margin-top: 2px;
+            border-right: 15px solid #ff0000;
+        }
+
+        /* Grille de contenu */
+        .container {
+            max-width: 1300px;
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            padding: 0 20px 100px 20px;
+        }
+
+        .card {
+            background: white;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 6px solid #0056b3;
+        }
+
+        .card-content {
+            padding: 25px;
+        }
+
+        .category-tag {
+            color: #ff0000;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        h2 {
+            margin: 0 0 15px 0;
+            font-size: 1.8rem;
+            color: #002b5c;
+            line-height: 1.1;
+        }
+
+        p {
+            line-height: 1.6;
+            color: #333;
+            font-size: 1.05rem;
+        }
+
+        /* Sidebar BFM */
+        .sidebar-title {
+            background-color: #002b5c;
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .sidebar-list {
+            background: white;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+
+        .time-stamp {
+            color: #ff0000;
+            font-weight: 900;
+            font-size: 0.85rem;
+            min-width: 50px;
+        }
+
+        /* Ticker du bas */
+        .ticker-wrapper {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #1a1a1a;
+            color: white;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            font-weight: bold;
+        }
+
+        .ticker-label {
+            background-color: #ff0000;
+            padding: 0 25px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+            z-index: 2;
+        }
+
+        .ticker-text-container {
+            overflow: hidden;
+            flex-grow: 1;
+        }
+
+        .ticker-text {
+            white-space: nowrap;
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll 30s linear infinite;
+            font-size: 1.2rem;
+        }
+
+        @keyframes scroll {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-200%, 0); }
+        }
+
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+            .main-title-box { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <div class="logo-bfm">BFM<span>TV</span></div>
+    <div style="font-size: 0.8rem; letter-spacing: 1px;">PREMIÈRE CHAÎNE D'INFO DE FRANCE</div>
+    <div class="live-badge">DIRECT</div>
+</div>
+
+<div class="hero-section">
+    <div class="breaking-news-overlay">
+        <div class="main-title-box">AFFAIRE EPSTEIN</div>
+        <div class="subtitle-box">DOUBI : RÉVÉLATIONS SUR LE "LOGISTICIEN" DE L'OMBRE</div>
+    </div>
+</div>
+
+<div class="container">
+    <main>
+        <!-- Article 1 -->
+        <div class="card">
+            <div class="card-content">
+                <span class="category-tag">Enquête BFM TV</span>
+                <h2>Le mystérieux appartement de l'Avenue Foch</h2>
+                <p>Nos reporters ont identifié une garçonnière de 300m² dont les factures d'électricité étaient réglées par une société-écran basée au Delaware. Le nom de <strong>Doubi</strong> apparaît sur les contrats de maintenance du système de vidéo-surveillance. Selon nos sources, cet appartement aurait servi de lieu de transit pour des dossiers ultra-confidentiels.</p>
+            </div>
+        </div>
+
+        <!-- Article 2 -->
+        <div class="card">
+            <div class="card-content">
+                <span class="category-tag">Exclusif</span>
+                <h2>Crypto-trafic : 40 millions d'euros en transit</h2>
+                <p>Les enquêteurs s'intéressent de près au portefeuille numérique de Doubi. Plus de 2 000 transactions en Bitcoin auraient été effectuées vers des comptes liés à la garde rapprochée de Jeffrey Epstein. L'argent servait-il à financer le silence des témoins ?</p>
+            </div>
+        </div>
+
+        <!-- Article 3 -->
+        <div class="card">
+            <div class="card-content">
+                <span class="category-tag">Justice</span>
+                <h2>Plainte déposée contre "X" visant Doubi</h2>
+                <p>Trois anciennes victimes présumées du réseau Epstein ont cité le nom de "Doubi" dans leurs dépositions cette semaine à Paris. Elles décrivent un homme "froid", toujours muni de lunettes bleues, chargé de confisquer les téléphones portables avant chaque soirée privée.</p>
+            </div>
+        </div>
+
+        <!-- Article 4 -->
+        <div class="card">
+            <div class="card-content">
+                <span class="category-tag">Politique</span>
+                <h2>L'Élysée nie tout contact avec le "Fantôme"</h2>
+                <p>Suite aux rumeurs de liens entre Doubi et certains conseillers ministériels, le gouvernement a publié un démenti formel. "Aucun badge d'accès au nom de ce monsieur n'a jamais été délivré", affirme le porte-parole.</p>
+            </div>
+        </div>
+
+        <!-- Article 5 -->
+        <div class="card">
+            <div class="card-content">
+                <span class="category-tag">International</span>
+                <h2>Doubi aperçu sur un yacht au large de la Turquie ?</h2>
+                <p>Une photo floue circulant sur les réseaux sociaux montre un homme ressemblant étrangement à Doubi sur le pont d'un navire battant pavillon des îles Caïmans. Interpol n'a pas encore confirmé l'authenticité du cliché.</p>
+            </div>
+        </div>
+    </main>
+
+    <aside>
+        <div class="sidebar-title">Le Fil Info</div>
+        <div class="sidebar-list">
+            <div class="sidebar-item">
+                <div class="time-stamp">10:05</div>
+                <div><strong>Justice :</strong> Le parquet de Paris ouvre une enquête préliminaire.</div>
+            </div>
+            <div class="sidebar-item">
+                <div class="time-stamp">09:42</div>
+                <div><strong>Témoignage :</strong> Un ancien majordome balance sur Doubi.</div>
+            </div>
+            <div class="sidebar-item">
+                <div class="time-stamp">09:15</div>
+                <div><strong>Bourse :</strong> Les actions des sociétés liées à Doubi s'effondrent.</div>
+            </div>
+            <div class="sidebar-item">
+                <div class="time-stamp">08:30</div>
+                <div><strong>Aéroport :</strong> Surveillance renforcée au Bourget.</div>
+            </div>
+            <div class="sidebar-item">
+                <div class="time-stamp">07:50</div>
+                <div><strong>Météo :</strong> Tempête médiatique sur la capitale.</div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 30px; background-color: #f8f8f8;">
+            <div class="card-content">
+                <h3 style="color:#002b5c; margin-top:0;">DÉCRYPTAGE</h3>
+                <p style="font-size: 0.9rem;">Pourquoi l'affaire Doubi paralyse-t-elle l'élite ? Nos experts en plateau ce soir à 20h.</p>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<!-- Ticker BFM -->
+<div class="ticker-wrapper">
+    <div class="ticker-label">ALERTE INFO</div>
+    <div class="ticker-text-container">
+        <div class="ticker-text">
+            URGENT : DoubiLeaks publie une nouvelle série de documents confidentiels --- INFO BFM TV : La perquisition Avenue Foch a permis de saisir 4 serveurs informatiques --- AFFAIRE EPSTEIN : Le nom de Doubi cité dans 14 nouveaux témoignages --- DIRECT : Suivez l'évolution de l'enquête minute par minute sur notre application...
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
